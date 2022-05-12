@@ -6,6 +6,7 @@ import sk.stuba.fei.uim.oop.assignment3.books.data.Book;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -19,5 +20,10 @@ public class Author {
     private String surname;
 
     @OneToMany
-    private List<Book> bookList = new ArrayList<>();
+    private List<Book> books;
+
+    public Author()
+    {
+        this.books = new LinkedList<>();
+    }
 }

@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.books.logic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.stuba.fei.uim.oop.assignment3.authors.logic.IAuthorService;
 import sk.stuba.fei.uim.oop.assignment3.books.web.BookRequest;
 import sk.stuba.fei.uim.oop.assignment3.books.data.Book;
 import sk.stuba.fei.uim.oop.assignment3.books.data.IBookRepository;
@@ -12,13 +13,13 @@ import java.util.List;
 public class BookService implements IBookService{
 
     private final IBookRepository repository;
+    private final IAuthorService authorService;
 
     @Autowired
-    public BookService(IBookRepository repository)
+    public BookService(IBookRepository repository, IAuthorService authorService)
     {
         this.repository = repository;
-        //Book book = new Book();
-
+        this.authorService = authorService;
     }
 
     public List<Book> getAll()
@@ -36,13 +37,20 @@ public class BookService implements IBookService{
         newBook.setAmount(request.getAmount());
         newBook.setPages(request.getPages());
         newBook.setLendCount(request.getLendCount());
+
+        // get author from author repo
+        var author = authorService.getAuthorById(request.getAuthor());
+        newBook.setAuthorObject(author);
+        author.getBooks().add(newBook);
         return this.repository.save(newBook);
     }
 
     @Override
     public Book getBookById(Long id)
     {
-        return this.repository.findById(id).orElseThrow();
+        return this.repository
+                .findById(id)
+                .orElseThrow();
     }
 
     @Override

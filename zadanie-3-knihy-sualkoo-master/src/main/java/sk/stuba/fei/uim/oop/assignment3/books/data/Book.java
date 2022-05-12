@@ -2,11 +2,9 @@ package sk.stuba.fei.uim.oop.assignment3.books.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import sk.stuba.fei.uim.oop.assignment3.authors.data.Author;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -21,4 +19,6 @@ public class Book {
     private Long pages;
     private Long amount;
     private Long lendCount;
+    @ManyToOne
+    private Author authorObject;
 }
